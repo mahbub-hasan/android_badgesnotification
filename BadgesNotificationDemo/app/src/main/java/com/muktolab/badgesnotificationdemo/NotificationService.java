@@ -1,5 +1,7 @@
 package com.muktolab.badgesnotificationdemo;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -21,6 +23,7 @@ public class NotificationService extends Service {
     private int badgesCount = 0;
     private Timer timer;
     private Handler handler = new Handler();
+    private String notificationChannelID = "badges_notification";
 
     public NotificationService() {
     }
@@ -63,12 +66,16 @@ public class NotificationService extends Service {
             NotificationCompat.Builder notification = new NotificationCompat.Builder(this)
                     .setSmallIcon(R.mipmap.ic_launcher)
                     .setContentTitle("Demo Notification")
-                    .setContentText("Demo notification test with badges.");
+                    .setContentText("Demo notification test with badges.")
+                    .setChannel(notificationChannelID)
+                    .setNumber(badgesCount);
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
             stackBuilder.addNextIntent(new Intent(this, HomeActivity.class));
             PendingIntent pendingIntent = stackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
             notification.setContentIntent(pendingIntent);
-            ShortcutBadger.applyCount(this,badgesCount);
+            //NotificationChannel channel = new NotificationChannel(notificationChannelID,"Test",NotificationManager.IMPORTANCE_HIGH);
+            //ShortcutBadger.applyCount(this,badgesCount);
+            AppIcon.setBadge(this,badgesCount);
             notificationManager.notify(notificationID,notification.build());
             Log.d("NOTIFICATION_TAG","============ Notification send Level =====================");
         }catch (Exception ex){

@@ -42,7 +42,7 @@ public class HomeActivity extends AppCompatActivity {
     private void clearNotificationAndBadge(){
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         manager.cancel(111);
-        ShortcutBadger.removeCount(HomeActivity.this);
+        //ShortcutBadger.removeCount(HomeActivity.this);
     }
 
     @Override
